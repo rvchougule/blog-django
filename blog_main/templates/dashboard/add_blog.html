@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block content %} {% load crispy_forms_tags %}
+
+<div class="row my-4">
+  <!--left container-->
+  <!--sidebar here-->
+  {% include "dashboard/sidebar.html" %}
+  <!--right container-->
+  <div class="col">
+    <div class="mx-auto my-4 border p-4 shadow-sm" style="max-width: 600px">
+      <h3 class="mb-4">Add Blog</h3>
+      <form
+        action="{% url 'add_blog'%}"
+        method="POST"
+        class=""
+        enctype="multipart/form-data"
+      >
+        {%csrf_token%} {{ form.non_field_errors | crispy }} {{ form | crispy }}
+        <button type="submit" class="btn btn-warning mt-2">Submit</button>
+      </form>
+    </div>
+  </div>
+  {% endblock content %}
+</div>

@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block content %}
+<div class="row my-4">
+  <!--left container-->
+  <!--sidebar here-->
+  {% include "dashboard/sidebar.html" %}
+  <!--right container-->
+  <div class="col">
+    <div class="text-uppercase font-weight-bold mb-2">WELCOME ! {{user}}</div>
+    <div class="row mx-auto">
+      <div class="col">
+        <div class="card text-dark bg-light mb-3" style="max-width: 18rem">
+          <h5 class="card-header text-center">All Categories</h5>
+          <div class="card-body">
+            <h5 class="card-title text-center">{{categories_count}}</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card text-dark bg-light mb-3" style="max-width: 18rem">
+          <h5 class="card-header text-center">All Posts</h5>
+          <div class="card-body">
+            <h5 class="card-title text-center">{{blogs_count}}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

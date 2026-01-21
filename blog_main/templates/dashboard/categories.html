@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block content %}
+<div class="row my-4">
+  <!--left container-->
+  <!--sidebar here-->
+  {% include "dashboard/sidebar.html" %}
+  <!--right container-->
+  <div class="col">
+    <div
+      class="d-flex flex-row justify-content-between align-items-center mb-3"
+    >
+      <h3 class="mb-4">Categories</h3>
+      <a
+        href="{% url 'add_category' %}"
+        class="text-dark btn-light btn font-weight-bold"
+        >Add +</a
+      >
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Category Name</th>
+          <th scope="col">Created At</th>
+          <th scope="col">Updated At</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cat in categories %}
+        <tr>
+          <th scope="row">{{cat.id}}</th>
+          <td>{{cat.category_name}}</td>
+          <td>{{cat.created_at}}</td>
+          <td>{{cat.updated_at}}</td>
+          <td>
+            <a href="{%url 'update_category' cat.id%}" class="btn btn-sm"
+              ><i class="fas fa-edit text-success"></i
+            ></a>
+            <a href="{%url 'delete_category' cat.id%}" class="btn btn-sm"
+              ><i class="fas fa-trash text-danger"></i
+            ></a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endblock content %}
+</div>

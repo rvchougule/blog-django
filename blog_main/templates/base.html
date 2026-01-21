@@ -14,9 +14,83 @@
       href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link href="{% static 'css/blog.css' %}" rel="stylesheet" />
+
+    <style>
+      .toast-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      /* Base toast */
+      .custom-toast {
+        min-width: 260px;
+        padding: 12px 16px;
+        border-radius: 8px;
+        color: #fff;
+        font-weight: 500;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        animation:
+          slideIn 0.4s ease,
+          fadeOut 0.5s ease 3.5s forwards;
+      }
+
+      /* Message types */
+      .custom-toast.success {
+        background-color: #16a34a;
+      }
+
+      .custom-toast.error {
+        background-color: #dc2626;
+      }
+
+      .custom-toast.warning {
+        background-color: #f59e0b;
+      }
+
+      .custom-toast.info {
+        background-color: #2563eb;
+      }
+
+      /* Animations */
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeOut {
+        to {
+          opacity: 0;
+          transform: translateX(100%);
+        }
+      }
+    </style>
   </head>
   <body>
+    <!-- Toast Container -->
+    <div
+      class="toast-container position-fixed bottom-0 end-0 p-3"
+      style="z-index: 1055"
+    >
+      {% if messages %} {% for message in messages %}
+      <div class="custom-toast {{ message.tags }}">{{ message }}</div>
+      {% endfor %} {% endif %}
+    </div>
+
     <!--Header Start-->
     <div class="container">
       <header class="blog-header py-3">
@@ -62,6 +136,9 @@
           {% else %}
           <div class="col-4 d-flex justify-content-end align-items-center">
             <span class="mr-2">Hello, {{user.username}}</span>
+            <a class="btn btn-sm btn-warning mr-2" href="{% url 'dashboard' %}"
+              >Dashboard</a
+            >
             <a class="btn btn-sm btn-warning" href="{% url 'logout' %}"
               >Logout</a
             >
@@ -88,8 +165,17 @@
       <!--Main Content body -->
       {% endblock content %}
     </div>
+
     <footer class="blog-footer">
       <p>Django blog built with � by <a href="#">Rohan Chougule</a></p>
     </footer>
+
+    <script>
+      setTimeout(() => {
+        document.querySelectorAll(".custom-toast").forEach((toast) => {
+          toast.remove();
+        });
+      }, 4000); // 4 seconds
+    </script>
   </body>
 </html>

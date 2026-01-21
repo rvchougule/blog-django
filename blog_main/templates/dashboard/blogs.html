@@ -1,0 +1,94 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<style>
+  /* Card hover effect */
+  .blog-card {
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Image fit */
+  .blog-card img {
+    height: 200px;
+    object-fit: cover;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .blog-card img {
+      height: 180px;
+    }
+  }
+</style>
+
+<div class="row my-4">
+  <!-- Sidebar -->
+  {% include "dashboard/sidebar.html" %}
+
+  <!-- Content -->
+  <div class="col">
+    <div
+      class="d-flex flex-row justify-content-between align-items-center mb-3"
+    >
+      <h3 class="mb-4">Blogs</h3>
+      <a
+        href="{% url 'add_blog' %}"
+        class="text-dark btn-light btn font-weight-bold"
+        >Add +</a
+      >
+    </div>
+    <div class="row">
+      {% for blog in blogs %}
+      <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card blog-card h-100">
+          {% if blog.featured_image %}
+          <img
+            src="{{ blog.featured_image.url }}"
+            alt="{{ blog.title }}"
+            class="card-img-top"
+          />
+          {% else %}
+          <img
+            src="{% static 'images/default-blog.jpg' %}"
+            alt="Default Image"
+            class="card-img-top"
+          />
+          {% endif %}
+
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ blog.title|truncatechars:100 }}</h5>
+
+            <p class="card-text text-muted">
+              {{ blog.short_description|truncatechars:150 }}
+            </p>
+
+            <div
+              class="d-flex bottom-0 justify-content-between align-items-center mt-auto"
+            >
+              <a href="#" class="btn btn-outline-primary mt-auto">
+                Read More →
+              </a>
+              <a href="{% url 'update_blog' blog.id%}" class="btn btn-sm"
+                ><i class="fas fa-edit text-success"></i
+              ></a>
+              <a href="{% url 'delete_blog' blog.id%}" class="btn btn-sm"
+                ><i class="fas fa-trash text-danger"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,32 @@
+<div class="col-3 bg-light p-0">
+  <nav class="">
+    {% with request.resolver_match.url_name as url_name %}
+    <ul class="nav flex-column">
+      <li
+        class="nav-item btn {% if '/dashboard/' == request.path %}bg-warning{% endif %}"
+      >
+        <a
+          class="nav-link text-dark active"
+          aria-current="page"
+          href="{% url 'dashboard' %}"
+          >Dashboard</a
+        >
+      </li>
+
+      <li
+        class="nav-item btn {% if url_name in 'categories add_category update_category delete_category' %}bg-warning{% endif %}"
+      >
+        <a class="nav-link text-dark" href="{% url 'categories' %}"
+          >Categories</a
+        >
+      </li>
+
+      <li
+        class="nav-item btn {% if url_name in 'blogs add_blog update_blog delete_blog' %}bg-warning{% endif %}"
+      >
+        <a class="nav-link text-dark" href="{% url 'blogs' %}">Posts</a>
+      </li>
+    </ul>
+    {% endwith %}
+  </nav>
+</div>
