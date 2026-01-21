@@ -17,16 +17,20 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path,include
-from .views import home
+from .views import home,register,login_view,logout_view
 
 from django.conf import settings
 from django.conf.urls.static import static
 from blogs import views as blog_views
 
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("",home,name="home"),
     path("category/",include("blogs.urls")),
-    path("<slug:slug>/",blog_views.blog_page,name="blog_page"),
-    path("blog/search",blog_views.blog_search,name="search"),
+    path("blogs/<slug:slug>/",blog_views.blog_page,name="blog_page"),
+    path("blog/search/",blog_views.blog_search,name="search"),
+    path("register/",register,name="register"),
+    path("login/",login_view,name="login"),
+    path("logout/",logout_view,name="logout"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
