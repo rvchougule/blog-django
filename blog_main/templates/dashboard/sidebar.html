@@ -12,6 +12,13 @@
           >Dashboard</a
         >
       </li>
+      {% if perms.auth %}
+      <li
+        class="nav-item btn {% if url_name in 'users add_user update_user delete_user' %}bg-warning{% endif %}"
+      >
+        <a class="nav-link text-dark" href="{%url 'users'%}">Users</a>
+      </li>
+      {% endif %}
 
       <li
         class="nav-item btn {% if url_name in 'categories add_category update_category delete_category' %}bg-warning{% endif %}"

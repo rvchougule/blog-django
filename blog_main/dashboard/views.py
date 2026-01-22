@@ -2,9 +2,19 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from blogs.models import Blog,Category
 from django.contrib.auth.decorators import login_required
-from .forms import CategoryForm,BlogForm
+from .forms import CategoryForm,BlogForm,UserForm,EditUserForm
 from django.contrib import messages
 from django.core.paginator import Paginator
+
+from django.contrib.auth.models import User
+
+from django.contrib.auth.decorators import user_passes_test
+def is_manager(user):
+    if not user.is_authenticated:
+        return False
+    return user.is_superuser or user.groups.filter(name='Manager').exists()
+
+
 
 
 @login_required(login_url='login')
@@ -110,3 +120,54 @@ def delete_blog(request,id):
     messages.success(request, 'Blog deleted successfully')
     return redirect('blogs')
     
+
+# User Management Views
+
+@user_passes_test(is_manager,login_url='dashboard')
+def users(request):
+    users = User.objects.all()
+    
+    context = {
+        'users': users
+    }
+    return render(request, 'dashboard/users.html',context)
+
+@user_passes_test(is_manager,login_url='dashboard')
+def add_user(request):
+    if request.method == "POST":
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'User added successfully')
+            return redirect('users')
+    else:
+        form = UserForm()
+    context = {
+        'form':form
+    }
+    return render(request, 'dashboard/add_user.html',context)
+
+@user_passes_test(is_manager,login_url='dashboard')
+def update_user(request,id): 
+    user = get_object_or_404(User,id=id)
+    
+    if request.method == "POST":
+        form = EditUserForm(request.POST,instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'User updated successfully')
+            return redirect('users')
+    else:
+        form = EditUserForm(instance=user)
+    context = {
+        'form':form,
+        'user':user
+    }   
+    return render(request, 'dashboard/update_user.html',context)
+
+@user_passes_test(is_manager,login_url='dashboard')
+def delete_user(request,id):
+    user = get_object_or_404(User,id=id)
+    user.delete()   
+    messages.success(request, 'User deleted successfully')
+    return redirect('users')

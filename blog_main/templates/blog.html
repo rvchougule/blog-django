@@ -35,6 +35,44 @@
           </p>
         </section>
       </article>
+      <!-- Comments section-->
+      <section class="mb-5">
+        <div class="card bg-light">
+          <div class="card-body">
+            <!-- Comment form-->
+            <form method="POST" action="{% url 'blog_page' single_blog.slug %}">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label class="form-label" for="commentTextArea"
+                  >Join the discussion and leave a comment!</label
+                >
+                <textarea
+                  class="form-control"
+                  id="commentTextArea"
+                  rows="3"
+                  name="commment"
+                ></textarea>
+              </div>
+              {% if user.is_authenticated %}
+              <button class="btn btn-primary" type="submit">Submit</button>
+              {% else %} Log in to post a comment {% endif %}
+            </form>
+          </div>
+        </div>
+
+        <!-- Single comment-->
+        {% for comm in comments %}
+        <div class="d-flex my-2 border p-2">
+          <!-- Parent comment-->
+          <div class="">
+            <p class="text-dark">"{{comm.content}}"</p>
+            <div class="text-muted">
+              By - {{comm.user}} | {{comm.created_at|timesince}} ago
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </section>
     </div>
     <!-- Side widgets-->
     <div class="col-lg-4">

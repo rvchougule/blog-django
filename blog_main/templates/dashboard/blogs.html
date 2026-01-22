@@ -73,7 +73,10 @@
             <div
               class="d-flex bottom-0 justify-content-between align-items-center mt-auto"
             >
-              <a href="#" class="btn btn-outline-primary mt-auto">
+              <a
+                href="{% url 'blog_page' blog.slug%}"
+                class="btn btn-outline-primary mt-auto"
+              >
                 Read More →
               </a>
               <a href="{% url 'update_blog' blog.id%}" class="btn btn-sm"
